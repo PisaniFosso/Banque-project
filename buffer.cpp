@@ -1,21 +1,28 @@
+/*
+Auteur: Pisani Fosso
+
+*/
 #include<iostream>
 #include <time.h>
 #include <vector>
 using namespace std;
 
+#define rotationTime 10;
+
 class buffer{
 private:
     int hardDrive[5][4];
-    int diskAcces;
     int arrayBufer[5];
-    int indiceBuffer;
     int dirtyBit[5];
+    int diskAcces;
+    int indiceBuffer;
+	int index;
 public:
     void readBuffer(int);
     void writeBuffer(int);
     void modifyBuffer(int);
-    int bufferAcces(int);
-    bool hardDriveAcces(int);
+    bool bufferAcces(int);
+    int hardDriveAccesTime(int);
     void showItems();
     buffer(int);
     ~buffer();
@@ -24,77 +31,97 @@ public:
 void buffer::readBuffer(int elt)
 {
     if(indiceBuffer > 4)
-            {
-                indiceBuffer = 0;
-                dirtyBit[indiceBuffer] = 0;
-            }
-
-    if(bufferAcces(elt) == 0)
     {
-        diskAcces++;
-        arrayBufer[indiceBuffer] = elt;
-         indiceBuffer++;
+      indiceBuffer = 0;
+      dirtyBit[indiceBuffer] = 0;
     }
 
+    if(bufferAcces(elt) == false)
+    {
+        hardDriveAccesTime(elt);
+        arrayBufer[indiceBuffer] = elt;
+        indiceBuffer++;
+    }
 }
 
 void buffer::writeBuffer(int elt)
 {
-    int index = bufferAcces(elt);
-    if( index != 0)
+    if( bufferAcces(elt) == false)
     {
-        if(dirtyBit[index] == 1)
-        {
-            diskAcces++;
-        }
-    }
+		hardDriveAccesTime(elt);
+	}
+    
+	else
+      {
+         dirtyBit[index] = 1;
+      }
 }
 
 void buffer::modifyBuffer(int elt)
 {
     int index = bufferAcces(elt);
-    if( index == 0)
+    if( bufferAcces(elt) == false)
     {
         readBuffer(elt);
     }
     dirtyBit[indiceBuffer - 1] = 1;
 }
 
-int buffer::bufferAcces(int elt)
+bool buffer::bufferAcces(int elt)
 {
-    int found = 0;
     for(int i = 0; i < 5; i++)
     {
         if(elt == arrayBufer[i])
             {
-                found = i;
-                break;
+				index = i;
+                return true;
             }
     }
-    return found;
+    return false;
 }
 
-bool buffer::hardDriveAcces(int elt)
+int buffer::hardDriveAccesTime(int elt)
 {
-    bool found = false;
+	int findItemTime = 0;
     for (int i = 0; i < 5; i++)
     {
             for (int j = 0; j < 4; j++)
         {
             if (hardDrive[i][j] = elt);
-                found = true;
+                findItemTime += 2;
         }
     }
 
-    return found;
+    return diskAcces += findItemTime;
 }
+
+void buffer::showItems()
+{
+	cout<<"Dans le buffer: "<<endl<<endl;
+     for (int i = 0; i < 5; ++i)
+    {
+        cout<<arrayBufer[i]<<"\t";
+    }
+
+    cout<<endl;
+	cout<<"Dirty bits"<<endl<<endl;
+    for (int i = 0; i < 5; ++i)
+    {
+        cout<<dirtyBit[i]<<"\t";
+    }
+    cout<<endl;
+    cout<<diskAcces<<endl;
+}
+
 buffer::buffer(int x)
 {
+
     diskAcces = 0;
     indiceBuffer = 0;
     for (int i = 0; i < 5; i++)
     {
         dirtyBit[i] = 0;
+		arrayBufer[i] = 0;
     }
     for (int i = 0; i < 5; i++)
     {
@@ -105,20 +132,7 @@ buffer::buffer(int x)
         }
     }
 }
-void buffer::showItems()
-{
-     for (int i = 0; i < 5; ++i)
-    {
-        cout<<arrayBufer[i]<<" ";
-    }
-    cout<<endl;
-    for (int i = 0; i < 5; ++i)
-    {
-        cout<<dirtyBit[i]<<" ";
-    }
-    cout<<endl;
-    cout<<diskAcces<<endl;
-}
+
 buffer::~buffer()
 {
 
@@ -134,15 +148,15 @@ int main()
     buffer operationsFile(0);
 
 
-
     for (int i = 0; i < 10; i++)
     {
         itemsFile = rand() % 20;
         arrayOfItems[i] = itemsFile;
-        cout<<itemsFile<<" ";
+        cout<<itemsFile<<"\t";
     }
 
     cout<<endl;
+
     for (int i = 0; i < 10; i++)
     {
         itemsFile = rand() % 3;
@@ -169,15 +183,11 @@ int main()
 
         }
         arrayOfRequest[i] = request;
-        cout<<request<<" ";
+        cout<<request<<"\t";
     }
     cout<<endl;
 
     operationsFile.showItems();
     return 0;
-
-
-    cout<<"Hello"<<endl;
-    return 0;
 }
-//
+//main
