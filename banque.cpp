@@ -76,11 +76,11 @@ void accountOperations::logIn()
     {
         if(userList.find(userName)->second == passWord)
               cout<<"Welcome "<<userName<<endl;
-           else
-            {
-              cout<<"error try again "<<endl;
-              passWord = "";
-            }
+        else
+          {
+            cout<<"error try again "<<endl;
+            passWord = "";
+          }
     }
     else
     {
@@ -89,6 +89,8 @@ void accountOperations::logIn()
     }
     count++;
    }
+    cout<<"Sorry about we can't identify you please call customer service"<<endl;
+	return;
 }
 
 void accountOperations::hidePassword(string &pass)
@@ -107,33 +109,29 @@ int main()
   string userName;
   string passWord;
   accountOperations user;
-  //vector<string> userList = {""};
-  //string testpw = "gun";
-  char choice;
-  int count = 0;
-   cout <<"Hello Merci d'avoir choisi la notre banque"<<endl;
-   for(int i = 0; i<3; i++)
-   {
-    cout <<"Please choose an option"<<endl;
+
+   int choice;
+   int count = 0;
+   cout <<"Hello Thank you for choosing our bank"<<endl;
+ 
+   cout <<"Please choose an option"<<endl;
    cout <<"1- Login"<<endl;
    cout <<"2- Signup"<<endl;
    cin >> choice;
-   while(choice != '2' && choice != '1')
+   while(choice != 2 && choice != 1)
     {
-        cout <<"Please select a good option"<<endl;
-        cin >> choice;
+       cout <<"Please select a good option"<<endl;
+       cin >> choice;
     }
 
    switch(choice)
    {
-    case '1': {
+    case 1: {
         cout << "Enter pass\n";
-
         user.logIn();
-
         break;
     }
-    case '2': {
+    case 2: {
         user.signUp();
         break;
     }
@@ -143,10 +141,12 @@ int main()
     }
    }
 
-   cout << "Enter pass\n";
-
+   cout <<"Please choose an option"<<endl;
+   cout <<"1- Deposite"<<endl;
+   cout <<"2- Transfert money"<<endl;
+   cout <<"3- Buy a bill"<<endl;
+   cout <<"4- Signup"<<endl;
    cout <<"Hello"<<endl;
-   }
 
     return 0;
 }
