@@ -2,14 +2,16 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include <vector>
+#include <map>
 using namespace std;
 
 class accountOperations
 {
-    public:
-    void signUp(string); //
-    void login(); //Connecter a un compte dans la banque
+private:
+    map<string, string> userList;
+public:
+    void signUp(); //
+    void logIn(); //Connecter a un compte dans la banque
     void hidePassword(string&);//
     void showAccount(); //Show detail about the account last transaction (within the last 2 weeks)
     void transfertMoney(); //Transfert from one account to another in the same banks and update both accounts
@@ -20,7 +22,76 @@ class accountOperations
     ~accountOperations(); //Destructor
 };
 
-void hidePassword(string &pass)
+accountOperations::accountOperations()
+{
+
+} //Constructor
+accountOperations::~accountOperations()
+{
+
+} //Destructor
+void accountOperations::signUp()
+{
+    string userName;
+    string passWord;
+    string confirmPw;
+    map<string,string>::iterator it = userList.begin();
+   cout<<"Entre votre nom d'utilisateur et mot de passe"<<endl;
+   cout<<"Username: ";
+   cin>>userName;
+   cout<<"Password: ";
+   hidePassword(passWord);
+   cout<<"confirm Password: ";
+   hidePassword(confirmPw);
+   while(passWord != confirmPw)
+   {
+    cout<<"Password don't match"<<endl;
+    cout<<"Password: "<<endl;
+    hidePassword(passWord);
+    cout<<"confirm Password: "<<endl;
+    hidePassword(confirmPw);
+   }
+   userList.insert(it, pair<string,string>(userName,passWord));
+   cout<<"Welcome "<<userName<<endl;
+}
+
+
+void accountOperations::logIn()
+{
+    string userName;
+    string passWord;
+    int count = 0;
+   cout<<"Entre votre nom d'utilisateur et mot de passe"<<endl;
+   cout<<"Username: ";
+   cin>>userName;
+   cout<<"Password: ";
+   hidePassword(passWord);
+   map<string, string>::iterator it;
+
+   while (count < 3)
+   {
+    it = userList.find(userName);
+       hidePassword(passWord);
+    if (it != userList.end())
+    {
+        if(userList.find(userName)->second == passWord)
+              cout<<"Welcome "<<userName<<endl;
+           else
+            {
+              cout<<"error try again "<<endl;
+              passWord = "";
+            }
+    }
+    else
+    {
+      cout<<"error try again "<<endl;
+      passWord = "";
+    }
+    count++;
+   }
+}
+
+void accountOperations::hidePassword(string &pass)
 {
   char ch;
   ch = _getch();
@@ -35,33 +106,47 @@ int main()
 {
   string userName;
   string passWord;
+  accountOperations user;
   //vector<string> userList = {""};
-  string testpw = "gun";
+  //string testpw = "gun";
+  char choice;
   int count = 0;
    cout <<"Hello Merci d'avoir choisi la notre banque"<<endl;
-   cout<<"Entre votre nom d'utilisateur et mot de passe"<<endl;
-   cout<<"Username: ";
-   cin>>userName;
-   cout<<"Password: ";
-   hidePassword(passWord);
-
-   while (count < 3)
+   for(int i = 0; i<3; i++)
    {
-	   hidePassword(passWord);
-    if (passWord == testpw)
+    cout <<"Please choose an option"<<endl;
+   cout <<"1- Login"<<endl;
+   cout <<"2- Signup"<<endl;
+   cin >> choice;
+   while(choice != '2' && choice != '1')
     {
-      cout<<"Welcome "<<userName<<endl;
-	  passWord = "";
+        cout <<"Please select a good option"<<endl;
+        cin >> choice;
     }
-    else
-    {
-      cout<<"error try again "<<endl;
-	  passWord = "";
+
+   switch(choice)
+   {
+    case '1': {
+        cout << "Enter pass\n";
+
+        user.logIn();
+
+        break;
     }
-	count++;
+    case '2': {
+        user.signUp();
+        break;
+    }
+    default:{
+        cout<<""<<endl;
+        break;
+    }
    }
+
    cout << "Enter pass\n";
-   
+
    cout <<"Hello"<<endl;
+   }
+
     return 0;
 }
