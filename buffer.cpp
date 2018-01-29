@@ -8,6 +8,7 @@ Auteur: Pisani Fosso
 using namespace std;
 
 #define rotationTime 10;
+#define readTime 2;
 
 class buffer {
 private:
@@ -30,15 +31,17 @@ public:
 
 void buffer::readBuffer(int elt)
 {
-	if (indiceBuffer > 4)
+	//si l'indice du buffer est a 5 revenir à 0 et remettre le dirtyBit à 0
+	if (indiceBuffer > 4)			
 	{
-		indiceBuffer = 0;
+		indiceBuffer = 0;			
 		dirtyBit[indiceBuffer] = 0;
 	}
 
-	if (bufferAcces(elt) == false)
+	//Si l'élément est deja dans le buffer ne rien faire
+	//Sinon le mettre dans le buffer
+	if (bufferAcces(elt) == false)	
 	{
-		//hardDriveAccesTime(elt);
 		arrayBufer[indiceBuffer] = elt;
 		indiceBuffer++;
 	}
@@ -47,17 +50,19 @@ void buffer::readBuffer(int elt)
 
 void buffer::writeBuffer(int elt)
 {
+	//Si l'élément est dans le buffer alors mettre son dirtybit à 1
 	if (bufferAcces(elt) == true)
 	{
 		dirtyBit[index] = 1;
-
 	}
+
+	//calculer le temps d'acces
 	hardDriveAccesTime();
 }
 
 void buffer::modifyBuffer(int elt)
 {
-	int index = bufferAcces(elt);
+	//Si l'élément n'est pas le buffer le mettre et mettre le dirtyBit à 1
 	if (bufferAcces(elt) == false)
 	{
 		readBuffer(elt);
@@ -67,6 +72,9 @@ void buffer::modifyBuffer(int elt)
 
 bool buffer::bufferAcces(int elt)
 {
+	//chercher si un élément est deja dans le buffer
+	//Si oui return true
+	//si non return false
 	for (int i = 0; i < 5; i++)
 	{
 		if (elt == arrayBufer[i])
@@ -80,6 +88,7 @@ bool buffer::bufferAcces(int elt)
 
 int buffer::hardDriveAccesTime()
 {
+	//int totalTime = readTime + rotationTime;
 	return diskAcces += 12;
 }
 
@@ -88,6 +97,7 @@ void buffer::showItems()
 	cout << "Dans le buffer: " << endl << endl;
 	for (int i = 0; i < 5; ++i)
 	{
+		if(arrayBufer[i] != -1)
 		cout << arrayBufer[i] << "\t";
 	}
 
