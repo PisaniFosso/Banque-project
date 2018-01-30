@@ -147,6 +147,22 @@ int main()
    cout <<"3- Buy a bill"<<endl;
    cout <<"4- Signup"<<endl;
    cout <<"Hello"<<endl;
-
+   cin>>choice;
+   switch(choice)
+   {
+    case 1: {
+        cout << "Enter pass\n";
+        user.logIn();
+        break;
+    }
+    case 2: {
+        user.signUp();
+        break;
+    }
+    default:{
+        cout<<""<<endl;
+        break;
+    }
+   }
     return 0;
 }
