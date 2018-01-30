@@ -147,7 +147,9 @@ int main()
    cout <<"3- Buy a bill"<<endl;
    cout <<"4- Signup"<<endl;
    cout <<"Hello"<<endl;
+	
    cin>>choice;
+	/*
    switch(choice)
    {
     case 1: {
@@ -163,6 +165,6 @@ int main()
         cout<<""<<endl;
         break;
     }
-   }
+   }*/
     return 0;
 }
